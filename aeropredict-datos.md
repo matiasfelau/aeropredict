@@ -50,6 +50,19 @@ Validar al inicio del pipeline que estas columnas existan con estos nombres; si 
 
 Las 16 variables pedidas por diseño están cubiertas: 12 directas + 4 derivadas (`anio`, `mes`, `ruta`, `factor_ocupacion`).
 
+### Estado real — verificado en el EDA (datos hasta 2026-04-30, 1.048.043 filas)
+
+✅ **Conseguidas todas.** Las 15 columnas de la tabla de arriba están presentes con esos nombres exactos (0 faltantes), y se construyeron las 4 derivadas (`anio`, `mes`, `ruta`, `factor_ocupacion`).
+
+❌ **Faltantes:** ninguna.
+
+➕ **Variables extra tomadas/disponibles.** El portal trae 4 columnas que este brief no listaba; quedan en la base diaria limpia por si backend/IA las quieren:
+
+| Columna extra | Para qué sirve |
+|---|---|
+| `origen_oaci` / `destino_oaci` | Código OACI del aeropuerto. Matchea 100% (49/49) con `aeropuertos.csv` → permite un join base ↔ aeropuertos **más robusto que por localidad**. |
+| `origen_pais` / `destino_pais` | País de origen/destino. Útil en rutas internacionales, donde `provincia` viene nula (~21%). |
+
 ## 4. Reglas de limpieza (aplicar en este orden; documentar cuántas filas afecta cada una)
 
 1. **Parseo de fecha:** convertir `indice_tiempo` a datetime. Descartar fechas inválidas o fuera de rango razonable (antes de 2017 o futuras) y reportarlas.
