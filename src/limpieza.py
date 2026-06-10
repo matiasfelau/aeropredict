@@ -87,6 +87,22 @@ def validar_esquema(df: pd.DataFrame) -> None:
         )
 
 
+def _optimizar_dtypes(df: pd.DataFrame) -> pd.DataFrame:
+    """Reduce memoria (pandas-pro): texto de baja cardinalidad -> category y
+    downcast de anio/mes. NO toca pasajeros/asientos/vuelos para no arriesgar
+    overflow al sumarlos en la agregación mensual."""
+    if not len(df):
+        return df
+    df = df.copy()
+    for col in df.select_dtypes(include=["object", "string"]).columns:
+        if df[col].nunique(dropna=True) / len(df) < 0.5:
+            df[col] = df[col].astype("category")
+    for col in (config.COL_ANIO, config.COL_MES):
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], downcast="integer")
+    return df
+
+
 # --------------------------------------------------------------------------- #
 # Pipeline de limpieza
 # --------------------------------------------------------------------------- #
@@ -216,6 +232,7 @@ def limpiar(df: pd.DataFrame) -> tuple[pd.DataFrame, ReporteCalidad]:
         ]).nunique()
     )
 
+    df = _optimizar_dtypes(df)
     return df, rep
 
 

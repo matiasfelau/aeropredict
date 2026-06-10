@@ -15,6 +15,21 @@ import pandas as pd
 from . import agregacion, config, descarga, limpieza, reporte
 
 
+def _validar_mensual(m: pd.DataFrame) -> None:
+    """Codifica como asserts los criterios de aceptación del entregable 5.2."""
+    clave = [
+        config.COL_ANIO, config.COL_MES, config.COL_RUTA, config.COL_CLASIFICACION,
+        "pasajeros", "asientos", "vuelos", config.COL_FACTOR,
+    ]
+    n_nulos = int(m[clave].isna().sum().sum())
+    assert n_nulos == 0, f"5.2: {n_nulos} nulos en columnas clave"
+    assert m[config.COL_FACTOR].between(0, config.FACTOR_MAX_VALIDO).all(), \
+        "5.2: factor_ocupacion fuera de [0, 1.05]"
+    assert m[config.COL_MES].between(1, 12).all(), "5.2: mes fuera de 1-12"
+    assert (m[["pasajeros", "asientos", "vuelos"]] >= 0).to_numpy().all(), \
+        "5.2: conteos negativos"
+
+
 def main(descargar_datos: bool = True) -> None:
     config.asegurar_directorios()
 
@@ -60,13 +75,18 @@ def main(descargar_datos: bool = True) -> None:
     # --- 7. Entregable 5.5: reporte de calidad ---------------------------
     reporte.generar_reporte_calidad(rep)
 
+    # --- Validación de criterios de aceptación (5.2) ---------------------
+    _validar_mensual(mensual)
+
     # --- Control: suma de pasajeros antes vs. después de agregar ----------
     total_diario = int(df_limpio[config.COL_PASAJEROS].sum())
     total_mensual = int(mensual["pasajeros"].sum())
+    assert total_mensual <= total_diario, \
+        f"5.2 suma más pasajeros ({total_mensual:,}) que la base diaria ({total_diario:,})"
     print(f"[pipeline] control pasajeros — diario(post-limpieza): {total_diario:,} | "
           f"mensual 5.2: {total_mensual:,} | "
           f"dif: {total_diario - total_mensual:,}")
-    print("[pipeline] OK")
+    print("[pipeline] validación OK")
 
 
 if __name__ == "__main__":
