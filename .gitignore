@@ -1,0 +1,23 @@
+# --- Datos ---
+# Crudos: pesados (cientos de MB), nunca al repo. Se bajan con src/descarga.py.
+data/raw/*
+# Intermedio pesado: se regenera con el pipeline.
+*.parquet
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+
+# --- Entornos / secretos ---
+.env
+.env.*
+
+# --- Local de Claude Code ---
+.claude/settings.local.json
+.agents/
+skills-lock.json
