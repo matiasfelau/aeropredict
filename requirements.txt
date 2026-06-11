@@ -1,0 +1,7 @@
+# Módulo de datos AeroPredict
+pandas>=2.0
+pyarrow>=14.0      # escritura/lectura de Parquet
+requests>=2.31     # descarga de los CSV de origen
+matplotlib>=3.7    # gráficos del EDA
+jupyter>=1.0       # notebooks/01_eda.ipynb
+pytest>=8.0        # tests/
