@@ -69,8 +69,8 @@ def test_reportar_ocupacion(client, rutas_variadas):
 
 def test_obtener_tendencias(client, db, rutas_variadas):
     """Test: obtener tendencias de una ruta."""
-    # Agregar más meses
-    for mes in range(9, 11):
+    # Agregar más meses (meses 8 y 9, ya que mes 10 es provisto por el fixture)
+    for mes in range(8, 10):
         ruta = Ruta(
             anio=2023,
             mes=mes,
@@ -83,7 +83,7 @@ def test_obtener_tendencias(client, db, rutas_variadas):
             pasajeros=750,
             asientos=1000,
             vuelos=20,
-            factor_ocupacion=0.75 + (mes - 9) * 0.05,
+            factor_ocupacion=0.70 + (mes - 8) * 0.05,
         )
         db.add(ruta)
     db.commit()

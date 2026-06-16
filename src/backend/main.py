@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .config import settings
 from .database import Base, engine
-from .routers import auth, rutas, aeropuertos, reportes, admin
+from .routers import auth, rutas, aeropuertos, reportes, admin, prediccion
 
 # Crear tablas si no existen
 Base.metadata.create_all(bind=engine)
@@ -54,6 +54,7 @@ app.include_router(
     reportes.router, prefix=f"{settings.API_PREFIX}/reportes", tags=["reportes"]
 )
 app.include_router(admin.router, prefix="/admin", tags=["admin"])
+app.include_router(prediccion.router, prefix=f"{settings.API_PREFIX}", tags=["prediccion"])
 
 
 # Rutas de health check

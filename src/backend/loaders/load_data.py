@@ -37,6 +37,7 @@ def cargar_datos_desde_pipeline(db: Session) -> Dict[str, Any]:
         - errores: list[str]
     """
     resultado = {
+        "exitoso": True,
         "rutas_nuevas": 0,
         "rutas_actualizadas": 0,
         "aeropuertos_nuevos": 0,
@@ -89,6 +90,7 @@ def cargar_datos_desde_pipeline(db: Session) -> Dict[str, Any]:
 
     except Exception as e:
         db.rollback()
+        resultado["exitoso"] = False
         resultado["errores"].append(str(e))
         print(f"❌ Error durante carga: {e}")
 

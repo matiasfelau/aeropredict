@@ -5,3 +5,5 @@ requests>=2.31     # descarga de los CSV de origen
 matplotlib>=3.7    # gráficos del EDA
 jupyter>=1.0       # notebooks/01_eda.ipynb
 pytest>=8.0        # tests/
+huggingface_hub>=0.19.0
+

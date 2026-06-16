@@ -20,3 +20,7 @@ env/
 .claude/settings.local.json
 .agents/
 skills-lock.json
+
+
+# --- Modelos de IA ---
+models/*.joblib

@@ -86,6 +86,8 @@ def authenticate_usuario(db: Session, username: str, password: str) -> Optional[
     usuario = get_usuario_by_username(db, username)
     if not usuario:
         return None
+    if not usuario.activo:
+        return None
     if not verify_password(password, usuario.password_hash):
         return None
     return usuario

@@ -1,6 +1,13 @@
-"""
-Pytest configuration y fixtures para tests del backend.
-"""
+import os
+import sys
+from unittest.mock import MagicMock
+
+# Mock huggingface_hub to prevent network calls to Hugging Face during tests
+mock_hf = MagicMock()
+mock_hf.hf_hub_download.side_effect = RuntimeError("Network calls to Hugging Face are disabled in tests")
+sys.modules['huggingface_hub'] = mock_hf
+
+os.environ["DATABASE_URL"] = "sqlite:///./test.db"
 
 import pytest
 from sqlalchemy import create_engine
@@ -47,7 +54,7 @@ def db():
 
 
 @pytest.fixture
-def client():
+def client(db):
     """Fixture para obtener cliente de test de FastAPI."""
     return TestClient(app)
 

@@ -260,3 +260,59 @@ class SyncMetadataResponse(BaseModel):
     rutas_totales: int
     aeropuertos_totales: int
     reporte_calidad_mas_reciente: Optional[ReporteCalidadResponse]
+
+
+# ============================================================================
+# PREDICCIONES (IA)
+# ============================================================================
+
+
+class PrediccionRequest(BaseModel):
+    """Request para consultar una predicción de demanda u ocupación."""
+
+    origen_localidad: str = Field(..., min_length=2, max_length=255)
+    destino_localidad: str = Field(..., min_length=2, max_length=255)
+    anio: int = Field(..., ge=2017)
+    mes: int = Field(..., ge=1, le=12)
+    clasificacion_vuelo: str = Field(..., pattern="^(cabotaje|internacional)$")
+    asientos: Optional[int] = Field(None, ge=0)
+    vuelos: Optional[int] = Field(None, ge=0)
+
+
+class DemandaResponse(BaseModel):
+    """Response con pasajeros estimados y nivel de demanda."""
+
+    ruta: str
+    pasajeros_predichos: int
+    nivel_demanda: str
+    alerta: str
+    recomendacion: str
+
+
+class OcupacionResponse(BaseModel):
+    """Response con pasajeros y factor de ocupación estimado."""
+
+    ruta: str
+    pasajeros_predichos: int
+    asientos: int
+    ocupacion_predicha: float
+    nivel_ocupacion: str
+    alerta: str
+    recomendacion: str
+
+
+class ModelMetricasResponse(BaseModel):
+    """Response con las métricas técnicas del modelo entrenado."""
+
+    modelo: str
+    variable_objetivo: str
+    registros_entrenamiento: int
+    registros_prueba: int
+    mae: float
+    rmse: float
+    mape: float
+    r2: float
+    fecha_entrenamiento: str
+    variables_usadas: list[str]
+    tiempo_entrenamiento_seg: float
+

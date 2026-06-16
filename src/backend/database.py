@@ -8,12 +8,18 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from .config import settings
 
 # Crear motor SQL
-engine = create_engine(
-    settings.DATABASE_URL,
-    pool_size=settings.SQLALCHEMY_POOL_SIZE,
-    max_overflow=settings.SQLALCHEMY_MAX_OVERFLOW,
-    pool_pre_ping=settings.SQLALCHEMY_POOL_PRE_PING,
-)
+if settings.DATABASE_URL.startswith("sqlite"):
+    engine = create_engine(
+        settings.DATABASE_URL,
+        connect_args={"check_same_thread": False}
+    )
+else:
+    engine = create_engine(
+        settings.DATABASE_URL,
+        pool_size=settings.SQLALCHEMY_POOL_SIZE,
+        max_overflow=settings.SQLALCHEMY_MAX_OVERFLOW,
+        pool_pre_ping=settings.SQLALCHEMY_POOL_PRE_PING,
+    )
 
 # Factory de sesiones
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

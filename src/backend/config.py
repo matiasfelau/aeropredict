@@ -45,6 +45,9 @@ class Settings(BaseSettings):
     # Pipeline ETL
     DATA_PROCESSED_PATH: Path = Path(__file__).parent.parent.parent / "data" / "processed"
     
+    # Hugging Face Model Registry
+    HF_MODEL_REPO_ID: str = "matiasfelau/aeropredict"
+    
     # Umbrales de negocio (reutilizados del pipeline)
     UMBRAL_BAJA_OCUPACION: float = 0.60
     UMBRAL_OCUPACION_ELEVADA: float = 0.85
