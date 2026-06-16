@@ -1,0 +1,20 @@
+{
+    "modelo": "HistGradientBoostingRegressor + TargetEncoder",
+    "variable_objetivo": "pasajeros",
+    "registros_entrenamiento": 28815,
+    "registros_prueba": 6231,
+    "mae": 477.7,
+    "rmse": 1087.64,
+    "mape": 0.7544,
+    "r2": 0.9915,
+    "fecha_entrenamiento": "2026-06-16 00:46:56",
+    "variables_usadas": [
+        "anio",
+        "mes",
+        "ruta",
+        "clasificacion_vuelo",
+        "asientos",
+        "vuelos"
+    ],
+    "tiempo_entrenamiento_seg": 429.4
+}

@@ -15,9 +15,12 @@ env/
 
 # --- Entornos / secretos ---
 .env
-.env.*
 
 # --- Local de Claude Code ---
 .claude/settings.local.json
 .agents/
 skills-lock.json
+
+
+# --- Modelos de IA ---
+models/*.joblib
